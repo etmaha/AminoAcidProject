@@ -14,6 +14,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();     //Added by jack
 app.UseStaticFiles();
 
 app.UseRouting();
