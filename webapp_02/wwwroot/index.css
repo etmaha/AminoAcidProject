@@ -2,3 +2,9 @@ body {
     background-color: lavender;
     padding: 40px;
 }
+
+
+#employee-table {
+    margin-top: 30px;
+    width: 40%;
+}
