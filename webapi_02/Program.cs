@@ -7,6 +7,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//jack - begin (put this after AddControllers)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder => builder
+            .WithOrigins("http://localhost:5049")
+            //.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+    );
+});
+//jack - end
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -16,7 +33,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+//jack - begin (put this after UseHttpsRedirection
+app.UseCors("CorsPolicy");
+//jack - end
 
 app.UseAuthorization();
 
