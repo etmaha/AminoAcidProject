@@ -31,18 +31,21 @@ namespace webapi_02
             }
         }
 
-        public static List<Employee> SearchEmployees(SqlConnection sqlConnection, string search)
+        public static List<Employee> SearchEmployees(SqlConnection sqlConnection, string search, int pageSize, int pageNumber, string sort)
         {
             List<Employee> employees = new List<Employee>();
 
             // Set the SQL statement
-            string sqlStatement = "select EmployeeId, FirstName, LastName, Salary from Employee where (FirstName like @Search OR LastName like @Search OR Salary like @Search) order by 1";
+            string sqlStatement = GetSearchQuery();
 
             // Create a SqlCommand
             using (SqlCommand sqlCommand = new SqlCommand(sqlStatement, sqlConnection))
             {
                 //Set parameters
                 sqlCommand.Parameters.AddWithValue("@Search", "%" + search + "%");
+                sqlCommand.Parameters.AddWithValue("@PageSize", pageSize);
+                sqlCommand.Parameters.AddWithValue("@PageNumber", pageNumber);
+                sqlCommand.Parameters.AddWithValue("@Sort", sort);
 
                 // Create a SqlDataReader and execute the SQL command
                 using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -80,6 +83,49 @@ namespace webapi_02
             }
 
             return employees;
+        }
+
+        private static string GetSearchQuery()
+        {
+            string searchQuery = "";
+
+            searchQuery += "select EmployeeId, ";
+            searchQuery += "FirstName, ";
+            searchQuery += "LastName, ";
+            searchQuery += "Salary, ";
+            searchQuery += "(@PageSize * (@PageNumber - 1) + 1) AS StartRow, ";
+            searchQuery += "least((@PageSize * @PageNumber), TotalRows) AS EndRow, ";
+            searchQuery += "TotalRows ";
+            searchQuery += "from ( ";
+            searchQuery += "select EmployeeId, ";
+            searchQuery += "FirstName, ";
+            searchQuery += "LastName, ";
+            searchQuery += "Salary, ";
+            searchQuery += "count(*) over () AS TotalRows, ";
+            searchQuery += "row_number() over ( ";
+            searchQuery += "order by ";
+            searchQuery += "case when @Sort = 'EmployeeId' then EmployeeId end, ";
+            searchQuery += "case when @Sort = 'EmployeeIdDesc' then EmployeeId end desc, ";
+            searchQuery += "case when @Sort = 'FirstName' then FirstName end, ";
+            searchQuery += "case when @Sort = 'FirstNameDesc'  then FirstName end desc, ";
+            searchQuery += "case when @Sort = 'LastName'  then LastName end, ";
+            searchQuery += "case when @Sort = 'LastNameDesc'  then LastName end desc, ";
+            searchQuery += "case when @Sort = 'Salary'  then Salary end, ";
+            searchQuery += "case when @Sort = 'SalaryDesc'  then Salary end desc ";
+            searchQuery += ") AS rn ";
+            searchQuery += "from Employee ";
+            searchQuery += "where 1 = 1 ";
+            searchQuery += "and ( ";
+            searchQuery += "EmployeeID like @Search ";
+            searchQuery += "OR FirstName like @Search ";
+            searchQuery += "OR LastName like @Search ";
+            searchQuery += "OR Salary like @Search ";
+            searchQuery += ") ";
+            searchQuery += ") x ";
+            searchQuery += "where rn between (@PageSize * (@PageNumber - 1) + 1) and (@PageSize * @PageNumber) ";
+            searchQuery += "order by rn ";
+
+            return searchQuery;
         }
 
         public static int InsertEmployee(SqlConnection sqlConnection, string firstName, string lastName, decimal salary)

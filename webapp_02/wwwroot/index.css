@@ -4,3 +4,12 @@ footer {
     border-top: solid 1px darkgray;
     border-bottom: solid 1px darkgray;
 }
+
+main {
+    height: 544px;
+}
+
+.btn-my-sort {
+    margin: -6px 0 0 8px;
+    padding: 0 4px 1px 4px;
+}

@@ -1,5 +1,8 @@
 //Define our application
 function webapp_02() {
+    //Gobal variables (use sparingly)
+    var sortOrder = "EmployeeId";
+
     //Get elements
     var navPage01 = document.getElementById("nav-page-01");
     var navPage02 = document.getElementById("nav-page-02");
@@ -76,8 +79,11 @@ function webapp_02() {
     }
 
     function handleButtonEmployeesSearchClick() {
+        searchEmployees();
+    }
 
-        var url = "http://localhost:5284/employees";
+    function searchEmployees() {
+        var url = "http://localhost:5284/employees?sort=" + sortOrder;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = doAfterSearchEmployees;
         xhr.open("GET", url);
@@ -108,27 +114,97 @@ function webapp_02() {
     }
 
     function handleButtonEmployeesClear() {
+        sortOrder = "EmployeeId";
         employeeTable.innerHTML = "";
     }
 
     function makeEmployeeTable(employees) {
 
+        //Create table top boilerplate
         var empString = '<table class="table">';
-        empString += '<thead><tr><th scope="col">Employee ID</th><th scope="col">First Name</th><th scope="col">Last Name</th><th scope="col">Salary</th></tr></thead>';
+
+        empString += '<thead>';
+        empString += '<tr>';
+        empString += '<th scope="col">ID <button type="button" id="button-sort-employee-id" class="btn btn-outline-secondary btn-sm btn-my-sort"><i class="bi bi-arrow-down-up"></i></button></th>';
+        empString += '<th scope="col">First Name <button type="button" id="button-sort-first-name" class="btn btn-outline-secondary btn-sm btn-my-sort"><i class="bi bi-arrow-down-up"></i></button></th>';
+        empString += '<th scope="col">Last Name <button type="button" id="button-sort-last-name" class="btn btn-outline-secondary btn-sm btn-my-sort"><i class="bi bi-arrow-down-up"></i></button></th>';
+        empString += '<th scope="col">Salary <button type="button" id="button-sort-salary" class="btn btn-outline-secondary btn-sm btn-my-sort"><i class="bi bi-arrow-down-up"></i></button></th>'
+        empString += '<th scope="col"></th>';
+        empString += '</tr>';
+        empString += '</thead>';
         empString += '<tbody>';
 
+        //Loop over employees array and build the table rows
         for (var i = 0; i < employees.length; i++) {
             var employee = employees[i];
-            empString += '<tr><td scope="row">' + employee.employeeId + '</td> <td>' + employee.firstName + '</td><td>' + employee.lastName + '</td><td>' + employee.salary + '</td></tr>';
+            empString += '<tr>';
+            empString += '<td scope="row">' + employee.employeeId + '</td>';
+            empString += '<td id="employee-' + employee.employeeId + '-first-name">' + employee.firstName + '</td>';
+            empString += '<td id="employee-' + employee.employeeId + '-last-name">' + employee.lastName + '</td>'
+            empString += '<td id="employee-' + employee.employeeId + '-salary">' + employee.salary + '</td>';
+            empString += '</tr>';
         }
 
+        //Create table bottom boilerplate
         empString += '</tbody>';
         empString += '</table>';
 
+        //Inject the table string
         employeeTable.innerHTML = empString;
+
+        //Get new elements we just created
+        var buttonSortEmployeeId = document.getElementById("button-sort-employee-id");
+        var buttonSortFirstName = document.getElementById("button-sort-first-name");
+        var buttonSortLastName = document.getElementById("button-sort-last-name");
+        var buttonSortSalary = document.getElementById("button-sort-salary");
+
+        //Add event listeners for new elements we just created
+        buttonSortEmployeeId.addEventListener("click", handleButtonSortEmployeeIdClick);
+        buttonSortFirstName.addEventListener("click", handleButtonSortFirstNameClick);
+        buttonSortLastName.addEventListener("click", handleButtonSortLastNameClick);
+        buttonSortSalary.addEventListener("click", handleButtonSortSalaryClick);
     }
 
-    //Execute functions tht need to run on page load
+    function handleButtonSortEmployeeIdClick() {
+        if (sortOrder === "EmployeeId") {
+            sortOrder = "EmployeeIdDesc";
+        } else {
+            sortOrder = "EmployeeId";
+        }
+
+        searchEmployees();
+    }
+    function handleButtonSortFirstNameClick() {
+        if (sortOrder === "FirstName") {
+            sortOrder = "FirstNameDesc";
+        } else {
+            sortOrder = "FirstName";
+        }
+
+        searchEmployees();
+    }
+
+    function handleButtonSortLastNameClick() {
+        if (sortOrder === "LastName") {
+            sortOrder = "LastNameDesc";
+        } else {
+            sortOrder = "LastName";
+        }
+
+        searchEmployees();
+    }
+
+    function handleButtonSortSalaryClick() {
+        if (sortOrder === "Salary") {
+            sortOrder = "SalaryDesc";
+        } else {
+            sortOrder = "Salary";
+        }
+
+        searchEmployees();
+    }
+
+    //Execute any functions that need to run on page load
     handleNewUrl();
 
 }

@@ -24,7 +24,7 @@ namespace webapi_02.Controllers
 
         [HttpGet]
         [Route("/Employees")]
-        public Response SearchEmployees(string search = "")
+        public Response SearchEmployees(string search = "", int pageSize = 10, int pageNumber = 1, string sort = "EmployeId")
         {
             Response response = new Response();
 
@@ -35,7 +35,7 @@ namespace webapi_02.Controllers
                     sqlConnection.Open();
 
                     //Select employees
-                    response.Employees = Employee.SearchEmployees(sqlConnection, search);
+                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
                     response.Message = $"{response.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
@@ -52,7 +52,7 @@ namespace webapi_02.Controllers
 
         [HttpGet]
         [Route("/InsertEmployee")]
-        public Response InsertEmployee(string firstName, string lastName, decimal salary)
+        public Response InsertEmployee(string firstName, string lastName, decimal salary, string search = "", int pageSize = 10, int pageNumber = 1, string sort = "EmployeId")
         {
             Response response = new Response();
 
@@ -67,7 +67,7 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsInserted} employees inserted. ";
 
                     //Select employees after insert
-                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
                     response.Message += $"{response.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
@@ -84,7 +84,7 @@ namespace webapi_02.Controllers
 
         [HttpGet]
         [Route("/UpdateEmployee")]
-        public Response UpdateEmployee(int employeeId, string firstName, string lastName, decimal salary)
+        public Response UpdateEmployee(int employeeId, string firstName, string lastName, decimal salary, string search = "", int pageSize = 10, int pageNumber = 1, string sort = "EmployeId")
         {
             Response response = new Response();
 
@@ -99,7 +99,7 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsUpdated} employees updated. ";
 
                     //Select employees after update
-                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
                     response.Message += $"{response.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
@@ -116,7 +116,7 @@ namespace webapi_02.Controllers
 
         [HttpGet]
         [Route("/DeleteEmployee")]
-        public Response DeleteEmployee(int employeeId)
+        public Response DeleteEmployee(int employeeId, string search = "", int pageSize = 10, int pageNumber = 1, string sort = "EmployeId")
         {
             Response response = new Response();
 
@@ -131,7 +131,7 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsDeleted} employees deleted. ";
 
                     //Select employees after delete
-                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
                     response.Message += $"{response.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
