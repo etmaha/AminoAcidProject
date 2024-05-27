@@ -5,11 +5,17 @@ function webapp_02() {
     var navPage02 = document.getElementById("nav-page-02");
     var navPage03 = document.getElementById("nav-page-03");
 
+    var page01 = document.getElementById("page-01");
+    var page02 = document.getElementById("page-02");
+    var page03 = document.getElementById("page-03");
+
     var buttonEmployeesSearch = document.getElementById("button-employees-search");
     var buttonEmployeesClear = document.getElementById("button-employees-clear");
     var employeeTable = document.getElementById("employee-table");
 
     //Add event listeners
+    window.addEventListener('popstate', handlePopState);
+
     navPage01.addEventListener("click", handleButtonNavPage01Click);
     navPage02.addEventListener("click", handleButtonNavPage02Click);
     navPage03.addEventListener("click", handleButtonNavPage03Click);
@@ -20,16 +26,54 @@ function webapp_02() {
     //Functions
     function handleButtonNavPage01Click(event) {
         event.preventDefault();
+        window.history.pushState({}, "", "/" + "Employees");
+        showPage("Employees");
     }
 
     function handleButtonNavPage02Click(event) {
         event.preventDefault();
+        window.history.pushState({}, "", "/" + "Customers");
+        showPage("Customers");
     }
 
     function handleButtonNavPage03Click(event) {
         event.preventDefault();
+        window.history.pushState({}, "", "/" + "Products");
+        showPage("Products");
     }
 
+    function showPage(page) {
+        if (page.toLowerCase() === "employees" || page === "") {  //lowercase comparison
+            page01.classList.remove("visually-hidden");
+            page02.classList.add("visually-hidden");
+            page03.classList.add("visually-hidden");
+        } else if (page.toLowerCase() === "customers") {  //lowercase comparison
+            page01.classList.add("visually-hidden");
+            page02.classList.remove("visually-hidden");
+            page03.classList.add("visually-hidden");
+        } else if (page.toLowerCase() === "products") {  //lowercase comparison
+            page01.classList.add("visually-hidden");
+            page02.classList.add("visually-hidden");
+            page03.classList.remove("visually-hidden");
+        }
+    }
+
+    function handleNewUrl() {
+        var page = window.location.pathname.split('/')[1];
+
+        if (page === "") {
+            window.history.replaceState({}, "", "/" + "Employees");
+        } else {
+            window.history.replaceState({}, "", "/" + page);
+        }
+
+        showPage(page);
+    }
+
+    function handlePopState() {
+        var page = window.location.pathname.split('/')[1];
+        showPage(page);
+    }
 
     function handleButtonEmployeesSearchClick() {
 
@@ -83,6 +127,9 @@ function webapp_02() {
 
         employeeTable.innerHTML = empString;
     }
+
+    //Execute functions tht need to run on page load
+    handleNewUrl();
 
 }
 

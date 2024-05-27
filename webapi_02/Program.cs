@@ -14,8 +14,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(
         "CorsPolicy",
         builder => builder
-            .WithOrigins("http://localhost:5049")
-            //.AllowAnyOrigin()
+            .WithOrigins("http://localhost:5049")  //This must be the port of the webapp is running on (not the port this webapi is running on)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()

@@ -13,8 +13,26 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();  //Commented out by jack
 app.UseDefaultFiles();     //Added by jack
+
+
+//jack - add rewrite - begin
+app.Use(async (context, next) =>
+{
+    var url = context.Request.Path.Value ?? "";
+    url = url.ToLower();
+
+    if (url.ToLower().EndsWith("/employees") || url.ToLower().EndsWith("/customers") || url.ToLower().EndsWith("/products"))
+    {
+        context.Request.Path = "/index.html";
+    }
+
+    await next();
+});
+//jack - add rewrite - end
+
+
 app.UseStaticFiles();
 
 app.UseRouting();
