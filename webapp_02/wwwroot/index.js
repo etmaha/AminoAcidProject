@@ -22,15 +22,17 @@ function webapp_02() {
             if (xhr.readyState === DONE) {
                 if (xhr.status === OK) {
 
+                    //Deserialize JSON response into a javascript object
                     var response = JSON.parse(xhr.responseText);
-                    makeEmployeeTable(response);
 
-                    // if (response.result === "success") {
-                    //     showSearchResultsMessage(response.employees);
-                    //     showEmployees(response.employees);
-                    // } else {
-                    //     alert("API Error: " + response.message);
-                    // }
+                    if (response.result === "success") {
+                        //alert(response.message);
+
+                        //Turn array of employees into an html table
+                        makeEmployeeTable(response.employees);
+                    } else {
+                        alert("API Error: " + response.message);
+                    }
                 } else {
                     alert("Server Error: " + xhr.status + " " + xhr.statusText);
                 }

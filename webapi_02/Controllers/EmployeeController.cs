@@ -24,65 +24,126 @@ namespace webapi_02.Controllers
 
         [HttpGet]
         [Route("/Employees")]
-        public List<Employee> SearchEmployees(string search = "")
+        public Response SearchEmployees(string search = "")
         {
-            List<Employee> employees = new List<Employee>();
+            Response response = new Response();
 
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            try
             {
-                sqlConnection.Open();
-                employees = Employee.SearchEmployees(sqlConnection, search);
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    //Select employees
+                    response.Employees = Employee.SearchEmployees(sqlConnection, search);
+                    response.Message = $"{response.Employees.Count} employees selected.";
+
+                    response.Result = Result.success;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"An error occurred in SearchEmployees: {ex.Message}";
+                response.Result = Result.error;
             }
 
-            return employees;
+            return response;
         }
 
         [HttpGet]
         [Route("/InsertEmployee")]
-        public List<Employee> InsertEmployee(string firstName, string lastName, decimal salary)
+        public Response InsertEmployee(string firstName, string lastName, decimal salary)
         {
-            List<Employee> employees = new List<Employee>();
+            Response response = new Response();
 
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            try
             {
-                sqlConnection.Open();
-                Employee.InsertEmployee(sqlConnection, firstName, lastName, salary);
-                employees = Employee.SearchEmployees(sqlConnection, "");
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    //Insert employee
+                    int rowsInserted = Employee.InsertEmployee(sqlConnection, firstName, lastName, salary);
+                    response.Message = "${rowsInserted} employees inserted. ";
+
+                    //Select employees after insert
+                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Message += $"{response.Employees.Count} employees selected.";
+
+                    response.Result = Result.success;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"An error occurred in InsertEmployee: {ex.Message}";
+                response.Result = Result.error;
             }
 
-            return employees;
+            return response;
         }
 
         [HttpGet]
         [Route("/UpdateEmployee")]
-        public List<Employee> DeleteEmployee(int employeeId, string firstName, string lastName, decimal salary)
+        public Response UpdateEmployee(int employeeId, string firstName, string lastName, decimal salary)
         {
-            List<Employee> employees = new List<Employee>();
+            Response response = new Response();
 
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            try
             {
-                sqlConnection.Open();
-                Employee.UpdateEmployee(sqlConnection, employeeId, firstName, lastName, salary);
-                employees = Employee.SearchEmployees(sqlConnection, "");
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    //Update employee
+                    int rowsUpdated = Employee.UpdateEmployee(sqlConnection, employeeId, firstName, lastName, salary);
+                    response.Message = "${rowsUpdated} employees updated. ";
+
+                    //Select employees after update
+                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Message += $"{response.Employees.Count} employees selected.";
+
+                    response.Result = Result.success;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"An error occurred in UpdateEmployee: {ex.Message}";
+                response.Result = Result.error;
             }
 
-            return employees;
+            return response;
         }
 
         [HttpGet]
         [Route("/DeleteEmployee")]
-        public List<Employee> DeleteEmployee(int employeeId)
+        public Response DeleteEmployee(int employeeId)
         {
-            List<Employee> employees = new List<Employee>();
+            Response response = new Response();
 
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            try
             {
-                sqlConnection.Open();
-                Employee.DeleteEmployee(sqlConnection, employeeId);
-                employees = Employee.SearchEmployees(sqlConnection, "");
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    //Delete employees
+                    int rowsDeleted = Employee.DeleteEmployee(sqlConnection, employeeId);
+                    response.Message = "${rowsDeleted} employees deleted. ";
+
+                    //Select employees after delete
+                    response.Employees = Employee.SearchEmployees(sqlConnection, "");
+                    response.Message += $"{response.Employees.Count} employees selected.";
+
+                    response.Result = Result.success;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"An error occurred in DeleteEmployee: {ex.Message}";
+                response.Result = Result.error;
             }
 
-            return employees;
+            return response;
         }
     }
 }
