@@ -1,10 +1,6 @@
-body {
+header,
+footer {
     background-color: lavender;
-    padding: 40px;
-}
-
-
-#employee-table {
-    margin-top: 30px;
-    width: 40%;
+    border-top: solid 1px darkgray;
+    border-bottom: solid 1px darkgray;
 }

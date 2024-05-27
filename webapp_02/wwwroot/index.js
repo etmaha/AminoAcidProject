@@ -1,14 +1,37 @@
 //Define our application
 function webapp_02() {
     //Get elements
-    var button01 = document.getElementById("button-01");
+    var navPage01 = document.getElementById("nav-page-01");
+    var navPage02 = document.getElementById("nav-page-02");
+    var navPage03 = document.getElementById("nav-page-03");
+
+    var buttonEmployeesSearch = document.getElementById("button-employees-search");
+    var buttonEmployeesClear = document.getElementById("button-employees-clear");
     var employeeTable = document.getElementById("employee-table");
 
     //Add event listeners
-    button01.addEventListener("click", handleButton01Click);
+    navPage01.addEventListener("click", handleButtonNavPage01Click);
+    navPage02.addEventListener("click", handleButtonNavPage02Click);
+    navPage03.addEventListener("click", handleButtonNavPage03Click);
+
+    buttonEmployeesSearch.addEventListener("click", handleButtonEmployeesSearchClick);
+    buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClear);
 
     //Functions
-    function handleButton01Click() {
+    function handleButtonNavPage01Click(event) {
+        event.preventDefault();
+    }
+
+    function handleButtonNavPage02Click(event) {
+        event.preventDefault();
+    }
+
+    function handleButtonNavPage03Click(event) {
+        event.preventDefault();
+    }
+
+
+    function handleButtonEmployeesSearchClick() {
 
         var url = "http://localhost:5284/employees";
         var xhr = new XMLHttpRequest();
@@ -38,9 +61,10 @@ function webapp_02() {
                 }
             }
         }
+    }
 
-
-
+    function handleButtonEmployeesClear() {
+        employeeTable.innerHTML = "";
     }
 
     function makeEmployeeTable(employees) {
@@ -62,5 +86,5 @@ function webapp_02() {
 
 }
 
-//Run out application
+//Run our application
 webapp_02();
