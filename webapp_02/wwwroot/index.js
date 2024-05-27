@@ -16,6 +16,14 @@ function webapp_02() {
     var buttonEmployeesClear = document.getElementById("button-employees-clear");
     var employeeTable = document.getElementById("employee-table");
 
+    var buttonEmployeeInsert = document.getElementById("button-employee-insert");
+    var formEmployeeInsert = document.getElementById("form-employee-insert");
+    var inputEmployeeInsertFirstName = document.getElementById("input-employee-insert-first-name");
+    var inputEmployeeInsertLastName = document.getElementById("input-employee-insert-last-name");
+    var inputEmployeeInsertSalary = document.getElementById("input-employee-insert-salary");
+    var buttonEmployeeInsertSave = document.getElementById("button-employee-insert-save");
+    var buttonEmployeeInsertCancel = document.getElementById("button-employee-insert-cancel");
+
     //Add event listeners
     window.addEventListener('popstate', handlePopState);
 
@@ -24,7 +32,11 @@ function webapp_02() {
     navPage03.addEventListener("click", handleButtonNavPage03Click);
 
     buttonEmployeesSearch.addEventListener("click", handleButtonEmployeesSearchClick);
-    buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClear);
+    buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClearClick);
+
+    buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
+    buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
+    buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
 
     //Functions
     function handleButtonNavPage01Click(event) {
@@ -131,13 +143,27 @@ function webapp_02() {
     }
 
     function searchEmployees() {
-        var url = "http://localhost:5284/employees?sort=" + sortOrder;
+        var url = "http://localhost:5284/employees";  //Port must be the port the API is running on
+        url += "?sort=" + sortOrder;
+        callAPI(url);
+    }
+
+    function insertEmployee() {
+        var url = "http://localhost:5284/insertemployee";  //Port must be the port the API is running on
+        url += "?firstname=" + inputEmployeeInsertFirstName.value;
+        url += "&lastname=" + inputEmployeeInsertLastName.value;
+        url += "&salary=" + inputEmployeeInsertSalary.value;
+        url += "&sort=" + sortOrder;
+        callAPI(url);
+    }
+
+    function callAPI(url) {
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = doAfterSearchEmployees;
+        xhr.onreadystatechange = doAfterAPIResultsArrive;
         xhr.open("GET", url);
         xhr.send(null);
 
-        function doAfterSearchEmployees() {
+        function doAfterAPIResultsArrive() {
             var DONE = 4; // readyState 4 means the request is done.
             var OK = 200; // status 200 is a successful return.
             if (xhr.readyState === DONE) {
@@ -161,7 +187,7 @@ function webapp_02() {
         }
     }
 
-    function handleButtonEmployeesClear() {
+    function handleButtonEmployeesClearClick() {
         sortOrder = "EmployeeId";
         employeeTable.innerHTML = "";
     }
@@ -250,6 +276,28 @@ function webapp_02() {
         }
 
         searchEmployees();
+    }
+
+    function handleButtonEmployeeInsertClick() {
+        formEmployeeInsert.classList.remove("visually-hidden");
+    }
+
+    function handleButtonEmployeeInsertSaveClick(event) {
+        event.preventDefault();
+        insertEmployee();
+        hideFormEmployeeInsert();
+    }
+
+    function handleButtonEmployeeInsertCancelClick(event) {
+        event.preventDefault();
+        hideFormEmployeeInsert();
+    }
+
+    function hideFormEmployeeInsert() {
+        formEmployeeInsert.classList.add("visually-hidden");
+        inputEmployeeInsertFirstName.value = "";
+        inputEmployeeInsertLastName.value = "";
+        inputEmployeeInsertSalary.value = "";
     }
 
     //Execute any functions that need to run on page load

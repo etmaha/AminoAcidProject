@@ -13,3 +13,13 @@ main {
     margin: -6px 0 0 8px;
     padding: 0 4px 1px 4px;
 }
+
+
+#form-employee-update,
+#form-employee-insert {
+    background-color: lavender;
+    border: solid 1px darkgray;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 20px;
+}
