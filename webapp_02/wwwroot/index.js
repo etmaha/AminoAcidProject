@@ -14,15 +14,24 @@ function webapp_02() {
 
     var buttonEmployeesSearch = document.getElementById("button-employees-search");
     var buttonEmployeesClear = document.getElementById("button-employees-clear");
+    var buttonEmployeeInsert = document.getElementById("button-employee-insert");
     var employeeTable = document.getElementById("employee-table");
 
-    var buttonEmployeeInsert = document.getElementById("button-employee-insert");
     var formEmployeeInsert = document.getElementById("form-employee-insert");
     var inputEmployeeInsertFirstName = document.getElementById("input-employee-insert-first-name");
     var inputEmployeeInsertLastName = document.getElementById("input-employee-insert-last-name");
     var inputEmployeeInsertSalary = document.getElementById("input-employee-insert-salary");
     var buttonEmployeeInsertSave = document.getElementById("button-employee-insert-save");
     var buttonEmployeeInsertCancel = document.getElementById("button-employee-insert-cancel");
+
+    var formEmployeeUpdate = document.getElementById("form-employee-update");
+    var inputEmployeeUpdateEmployeeId = document.getElementById("input-employee-update-employee-id");
+    var inputEmployeeUpdateFirstName = document.getElementById("input-employee-update-first-name");
+    var inputEmployeeUpdateLastName = document.getElementById("input-employee-update-last-name");
+    var inputEmployeeUpdateSalary = document.getElementById("input-employee-update-salary");
+    var buttonEmployeeUpdateSave = document.getElementById("button-employee-update-save");
+    var buttonEmployeeUpdateCancel = document.getElementById("button-employee-update-cancel");
+
 
     //Add event listeners
     window.addEventListener('popstate', handlePopState);
@@ -37,6 +46,9 @@ function webapp_02() {
     buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
     buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
     buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
+
+    buttonEmployeeUpdateSave.addEventListener("click", handleButtonEmployeeUpdateSaveClick);
+    buttonEmployeeUpdateCancel.addEventListener("click", handleButtonEmployeeUpdateCancelClick);
 
     //Functions
     function handleButtonNavPage01Click(event) {
@@ -157,6 +169,23 @@ function webapp_02() {
         callAPI(url);
     }
 
+    function updateEmployee() {
+        var url = "http://localhost:5284/updateemployee";  //Port must be the port the API is running on
+        url += "?employeeid=" + inputEmployeeUpdateEmployeeId.value;
+        url += "&firstname=" + inputEmployeeUpdateFirstName.value;
+        url += "&lastname=" + inputEmployeeUpdateLastName.value;
+        url += "&salary=" + inputEmployeeUpdateSalary.value;
+        url += "&sort=" + sortOrder;
+        callAPI(url);
+    }
+
+    function deleteEmployee(employeeId) {
+        var url = "http://localhost:5284/deleteemployee";  //Port must be the port the API is running on
+        url += "?employeeid=" + employeeId
+        url += "&sort=" + sortOrder;
+        callAPI(url);
+    }
+
     function callAPI(url) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = doAfterAPIResultsArrive;
@@ -195,7 +224,7 @@ function webapp_02() {
     function makeEmployeeTable(employees) {
 
         //Create table top boilerplate
-        var empString = '<table class="table">';
+        var empString = '<table class="table table-sm">';
 
         empString += '<thead>';
         empString += '<tr>';
@@ -216,6 +245,10 @@ function webapp_02() {
             empString += '<td id="employee-' + employee.employeeId + '-first-name">' + employee.firstName + '</td>';
             empString += '<td id="employee-' + employee.employeeId + '-last-name">' + employee.lastName + '</td>'
             empString += '<td id="employee-' + employee.employeeId + '-salary">' + employee.salary + '</td>';
+            empString += '<td>';
+            empString += '  <button type="button" class="btn btn-outline-secondary btn-sm employee-table-update_button" data-employee-id="' + employee.employeeId + '">Update</button>';
+            empString += '  <button type="button" class="btn btn-outline-secondary btn-sm employee-table-delete_button" data-employee-id="' + employee.employeeId + '">Delete</button>';
+            empString += '</td>';
             empString += '</tr>';
         }
 
@@ -232,11 +265,24 @@ function webapp_02() {
         var buttonSortLastName = document.getElementById("button-sort-last-name");
         var buttonSortSalary = document.getElementById("button-sort-salary");
 
+        var updateButtons = document.getElementsByClassName("employee-table-update_button");
+        var deleteButtons = document.getElementsByClassName("employee-table-delete_button");
+
         //Add event listeners for new elements we just created
         buttonSortEmployeeId.addEventListener("click", handleButtonSortEmployeeIdClick);
         buttonSortFirstName.addEventListener("click", handleButtonSortFirstNameClick);
         buttonSortLastName.addEventListener("click", handleButtonSortLastNameClick);
         buttonSortSalary.addEventListener("click", handleButtonSortSalaryClick);
+
+        for (var i = 0; i < updateButtons.length; i++) {
+            var updateButton = updateButtons[i];
+            updateButton.addEventListener("click", handleEmployeeTableUpdateClick);
+        }
+
+        for (var i = 0; i < deleteButtons.length; i++) {
+            var deleteButton = deleteButtons[i];
+            deleteButton.addEventListener("click", handleEmployeeTableDeleteClick);
+        }
     }
 
     function handleButtonSortEmployeeIdClick() {
@@ -248,6 +294,7 @@ function webapp_02() {
 
         searchEmployees();
     }
+
     function handleButtonSortFirstNameClick() {
         if (sortOrder === "FirstName") {
             sortOrder = "FirstNameDesc";
@@ -280,6 +327,9 @@ function webapp_02() {
 
     function handleButtonEmployeeInsertClick() {
         formEmployeeInsert.classList.remove("visually-hidden");
+        formEmployeeUpdate.classList.add("visually-hidden");
+        sortOrder = "EmployeeIdDesc";
+        searchEmployees();
     }
 
     function handleButtonEmployeeInsertSaveClick(event) {
@@ -298,6 +348,51 @@ function webapp_02() {
         inputEmployeeInsertFirstName.value = "";
         inputEmployeeInsertLastName.value = "";
         inputEmployeeInsertSalary.value = "";
+    }
+
+    function handleEmployeeTableUpdateClick(event) {
+        var employeeId = event.target.getAttribute("data-employee-id");
+
+        var firstName = document.getElementById("employee-" + employeeId + "-first-name");
+        var lastName = document.getElementById("employee-" + employeeId + "-last-name");
+        var salary = document.getElementById("employee-" + employeeId + "-salary");
+
+        inputEmployeeUpdateEmployeeId.value = employeeId;
+        inputEmployeeUpdateFirstName.value = firstName.innerText;
+        inputEmployeeUpdateLastName.value = lastName.innerText;
+        inputEmployeeUpdateSalary.value = salary.innerText;
+
+        formEmployeeUpdate.classList.remove("visually-hidden");
+        formEmployeeInsert.classList.add("visually-hidden");
+    }
+
+    function handleEmployeeTableDeleteClick(event) {
+        var employeeId = event.target.getAttribute("data-employee-id");
+
+        var userConfirmedDelete = confirm("Are you sure you want to delete employee " + employeeId + "?");
+
+        if (userConfirmedDelete) {
+            deleteEmployee(employeeId);
+        }
+    }
+
+    function handleButtonEmployeeUpdateSaveClick(event) {
+        event.preventDefault();
+        updateEmployee();
+        hideFormEmployeeUpdate();
+    }
+
+    function handleButtonEmployeeUpdateCancelClick(event) {
+        event.preventDefault();
+        hideFormEmployeeUpdate();
+    }
+
+    function hideFormEmployeeUpdate() {
+        formEmployeeUpdate.classList.add("visually-hidden");
+        inputEmployeeUpdateEmployeeId.value = "";
+        inputEmployeeUpdateFirstName.value = "";
+        inputEmployeeUpdateLastName.value = "";
+        inputEmployeeUpdateSalary.value = "";
     }
 
     //Execute any functions that need to run on page load
