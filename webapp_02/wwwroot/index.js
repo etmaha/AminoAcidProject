@@ -47,18 +47,66 @@ function webapp_02() {
 
     function showPage(page) {
         if (page.toLowerCase() === "employees" || page === "") {  //lowercase comparison
-            page01.classList.remove("visually-hidden");
-            page02.classList.add("visually-hidden");
-            page03.classList.add("visually-hidden");
+            showPage01();
+            hidePage02();
+            hidePage03();
         } else if (page.toLowerCase() === "customers") {  //lowercase comparison
-            page01.classList.add("visually-hidden");
-            page02.classList.remove("visually-hidden");
-            page03.classList.add("visually-hidden");
+            hidePage01();
+            showPage02();
+            hidePage03();
         } else if (page.toLowerCase() === "products") {  //lowercase comparison
-            page01.classList.add("visually-hidden");
-            page02.classList.add("visually-hidden");
-            page03.classList.remove("visually-hidden");
+            hidePage01();
+            hidePage02();
+            showPage03();
         }
+    }
+
+    function showPage01() {
+        navPage01.classList.remove("link-secondary");
+        navPage01.classList.remove("link-opacity-50");
+        navPage01.classList.add("link-body-emphasis");
+        navPage01.classList.add("link-opacity-100");
+        page01.classList.remove("visually-hidden");
+    }
+
+    function hidePage01() {
+        page01.classList.add("visually-hidden");
+        navPage01.classList.add("link-secondary");
+        navPage01.classList.add("link-opacity-50");
+        navPage01.classList.remove("link-body-emphasis");
+        navPage01.classList.remove("link-opacity-100");
+    }
+
+    function showPage02() {
+        navPage02.classList.remove("link-secondary");
+        navPage02.classList.remove("link-opacity-50");
+        navPage02.classList.add("link-body-emphasis");
+        navPage02.classList.add("link-opacity-100");
+        page02.classList.remove("visually-hidden");
+    }
+
+    function hidePage02() {
+        page02.classList.add("visually-hidden");
+        navPage02.classList.add("link-secondary");
+        navPage02.classList.add("link-opacity-50");
+        navPage02.classList.remove("link-body-emphasis");
+        navPage02.classList.remove("link-opacity-100");
+    }
+
+    function showPage03() {
+        navPage03.classList.remove("link-secondary");
+        navPage03.classList.remove("link-opacity-50");
+        navPage03.classList.add("link-body-emphasis");
+        navPage03.classList.add("link-opacity-100");
+        page03.classList.remove("visually-hidden");
+    }
+
+    function hidePage03() {
+        page03.classList.add("visually-hidden");
+        navPage03.classList.add("link-secondary");
+        navPage03.classList.add("link-opacity-50");
+        navPage03.classList.remove("link-body-emphasis");
+        navPage03.classList.remove("link-opacity-100");
     }
 
     function handleNewUrl() {
