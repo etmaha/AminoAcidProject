@@ -12,7 +12,8 @@ function webapp_02() {
     var page02 = document.getElementById("page-02");
     var page03 = document.getElementById("page-03");
 
-    var buttonEmployeesSearch = document.getElementById("button-employees-search");
+    var inputEmployeeSearch = document.getElementById("input-employee-search");
+    var buttonEmployeesShowAll = document.getElementById("button-employees-show-all");
     var buttonEmployeesClear = document.getElementById("button-employees-clear");
     var buttonEmployeeInsert = document.getElementById("button-employee-insert");
     var employeeTable = document.getElementById("employee-table");
@@ -46,7 +47,8 @@ function webapp_02() {
     navPage02.addEventListener("click", handleButtonNavPage02Click);
     navPage03.addEventListener("click", handleButtonNavPage03Click);
 
-    buttonEmployeesSearch.addEventListener("click", handleButtonEmployeesSearchClick);
+    inputEmployeeSearch.addEventListener("keyup", handleInputEmployeesSearchClick);
+    buttonEmployeesShowAll.addEventListener("click", handleButtonEmployeesShowAllClick);
     buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClearClick);
 
     buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
@@ -160,13 +162,22 @@ function webapp_02() {
         showPage(page);
     }
 
-    function handleButtonEmployeesSearchClick() {
+    function handleInputEmployeesSearchClick() {
+        inputPage.value = 1;
+        searchEmployees();
+    }
+
+    function handleButtonEmployeesShowAllClick() {
+        inputPage.value = 1;
+        inputEmployeeSearch.value = "";
+        sortOrder = "EmployeeId";
         searchEmployees();
     }
 
     function searchEmployees() {
         var url = "http://localhost:5284/employees";  //Port must be the port the API is running on
-        url += "?pagesize=" + selectPageSize.value;
+        url += "?search=" + inputEmployeeSearch.value;
+        url += "&pagesize=" + selectPageSize.value;
         url += "&pagenumber=" + inputPage.value;
         url += "&sort=" + sortOrder;
         callAPI(url);
@@ -177,6 +188,9 @@ function webapp_02() {
         url += "?firstname=" + inputEmployeeInsertFirstName.value;
         url += "&lastname=" + inputEmployeeInsertLastName.value;
         url += "&salary=" + inputEmployeeInsertSalary.value;
+        url += "&search=" + inputEmployeeSearch.value;
+        url += "&pagesize=" + selectPageSize.value;
+        url += "&pagenumber=" + inputPage.value;
         url += "&sort=" + sortOrder;
         callAPI(url);
     }
@@ -187,6 +201,9 @@ function webapp_02() {
         url += "&firstname=" + inputEmployeeUpdateFirstName.value;
         url += "&lastname=" + inputEmployeeUpdateLastName.value;
         url += "&salary=" + inputEmployeeUpdateSalary.value;
+        url += "&search=" + inputEmployeeSearch.value;
+        url += "&pagesize=" + selectPageSize.value;
+        url += "&pagenumber=" + inputPage.value;
         url += "&sort=" + sortOrder;
         callAPI(url);
     }
@@ -194,6 +211,9 @@ function webapp_02() {
     function deleteEmployee(employeeId) {
         var url = "http://localhost:5284/deleteemployee";  //Port must be the port the API is running on
         url += "?employeeid=" + employeeId
+        url += "&search=" + inputEmployeeSearch.value;
+        url += "&pagesize=" + selectPageSize.value;
+        url += "&pagenumber=" + inputPage.value;
         url += "&sort=" + sortOrder;
         callAPI(url);
     }
@@ -233,6 +253,7 @@ function webapp_02() {
     function handleButtonEmployeesClearClick() {
         sortOrder = "EmployeeId";
         inputPage.value = 1;
+        inputEmployeeSearch.value = "";
         employeeTable.innerHTML = "";
     }
 
@@ -382,6 +403,8 @@ function webapp_02() {
         formEmployeeInsert.classList.remove("visually-hidden");
         formEmployeeUpdate.classList.add("visually-hidden");
         sortOrder = "EmployeeIdDesc";
+        inputPage.value = 1;
+        inputEmployeeSearch.value = "";
         searchEmployees();
     }
 
