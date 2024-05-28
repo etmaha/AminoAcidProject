@@ -17,6 +17,12 @@ function webapp_02() {
     var buttonEmployeeInsert = document.getElementById("button-employee-insert");
     var employeeTable = document.getElementById("employee-table");
 
+    var buttonPagePrevious = document.getElementById("button-page-previous");
+    var buttonPageNext = document.getElementById("button-page-next");
+    var inputPage = document.getElementById("input-page");
+    var selectPageSize = document.getElementById("select-page-size");
+    var divPaginationMessage = document.getElementById("div-pagination-message");
+
     var formEmployeeInsert = document.getElementById("form-employee-insert");
     var inputEmployeeInsertFirstName = document.getElementById("input-employee-insert-first-name");
     var inputEmployeeInsertLastName = document.getElementById("input-employee-insert-last-name");
@@ -46,6 +52,10 @@ function webapp_02() {
     buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
     buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
     buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
+
+    buttonPagePrevious.addEventListener("click", handleButtonPagePreviousClick);
+    buttonPageNext.addEventListener("click", handleButtonPageNextClick);
+    selectPageSize.addEventListener("change", handleSelectPageSizeChange);
 
     buttonEmployeeUpdateSave.addEventListener("click", handleButtonEmployeeUpdateSaveClick);
     buttonEmployeeUpdateCancel.addEventListener("click", handleButtonEmployeeUpdateCancelClick);
@@ -156,7 +166,9 @@ function webapp_02() {
 
     function searchEmployees() {
         var url = "http://localhost:5284/employees";  //Port must be the port the API is running on
-        url += "?sort=" + sortOrder;
+        url += "?pagesize=" + selectPageSize.value;
+        url += "&pagenumber=" + inputPage.value;
+        url += "&sort=" + sortOrder;
         callAPI(url);
     }
 
@@ -204,8 +216,10 @@ function webapp_02() {
                     if (response.result === "success") {
                         //alert(response.message);
 
+                        makePaginationMessage(response.employeeResponse);
+
                         //Turn array of employees into an html table
-                        makeEmployeeTable(response.employees);
+                        makeEmployeeTable(response.employeeResponse.employees);
                     } else {
                         alert("API Error: " + response.message);
                     }
@@ -218,7 +232,21 @@ function webapp_02() {
 
     function handleButtonEmployeesClearClick() {
         sortOrder = "EmployeeId";
+        inputPage.value = 1;
         employeeTable.innerHTML = "";
+    }
+
+    function makePaginationMessage(employeeResponse) {
+        var startRow = employeeResponse.startRow;
+        var endRow = employeeResponse.endRow;
+        var totalRows = employeeResponse.totalRows;
+        var paginationMessage = "<p>" + startRow + " through " + endRow + " of " + totalRows + "</p>";
+
+        if (totalRows > 0) {
+            divPaginationMessage.innerHTML = paginationMessage;
+        } else {
+            divPaginationMessage.innerHTML = "";
+        }
     }
 
     function makeEmployeeTable(employees) {
@@ -285,6 +313,31 @@ function webapp_02() {
         }
     }
 
+    function handleButtonPagePreviousClick() {
+        var page = Number(inputPage.value);
+
+        if (page > 1) {
+            page = page - 1;
+        } else {
+            page = 1;
+        }
+
+        inputPage.value = page;
+
+        searchEmployees();
+    }
+
+    function handleButtonPageNextClick() {
+        var page = Number(inputPage.value);
+        inputPage.value = page + 1;
+        searchEmployees();
+    }
+
+    function handleSelectPageSizeChange() {
+        inputPage.value = 1;
+        searchEmployees();
+    }
+
     function handleButtonSortEmployeeIdClick() {
         if (sortOrder === "EmployeeId") {
             sortOrder = "EmployeeIdDesc";
@@ -341,6 +394,8 @@ function webapp_02() {
     function handleButtonEmployeeInsertCancelClick(event) {
         event.preventDefault();
         hideFormEmployeeInsert();
+        sortOrder = "EmployeeId";
+        searchEmployees();
     }
 
     function hideFormEmployeeInsert() {

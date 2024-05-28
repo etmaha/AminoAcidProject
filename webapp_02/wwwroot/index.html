@@ -49,13 +49,33 @@
             <div class="row">
                 <div class="col-8">
                     <p>Employees</p>
-                    <div id="employee-table"></div>
+                    <div id="employee-table-wrapper">
+                        <div id="employee-table"></div>
+                    </div>
                 </div>
                 <div class="col-4">
                     <button id="button-employees-search" type="button" class="btn btn-outline-secondary">Get
                         Employees</button>
                     <button id="button-employees-clear" type="button" class="btn btn-outline-secondary">Clear</button>
                     <button id="button-employee-insert" type="button" class="btn btn-outline-secondary">Insert</button>
+
+                    <div class="btn-group mt-3">
+                        <button type="button" id="button-page-previous"
+                            class="btn btn-outline-secondary btn-sm">Previous</button>
+
+                        <input type="text" id="input-page" value="1" class="form-control form-control-sm">
+
+                        <button type="button" id="button-page-next"
+                            class="btn btn-outline-secondary btn-sm">Next</button>
+
+                        <select id="select-page-size" class="form-select ms-3">
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="40">40</option>
+                        </select>
+                    </div>
+
+                    <div id="div-pagination-message" class="mt-2"></div>
 
                     <form id="form-employee-insert" class="visually-hidden">
                         <h4 class="text-center">Insert Employee</h4>

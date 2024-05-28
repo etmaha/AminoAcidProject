@@ -31,9 +31,9 @@ namespace webapi_02
             }
         }
 
-        public static List<Employee> SearchEmployees(SqlConnection sqlConnection, string search, int pageSize, int pageNumber, string sort)
+        public static EmployeeResponse SearchEmployees(SqlConnection sqlConnection, string search, int pageSize, int pageNumber, string sort)
         {
-            List<Employee> employees = new List<Employee>();
+            EmployeeResponse employeeResponse = new EmployeeResponse();
 
             // Set the SQL statement
             string sqlStatement = GetSearchQuery();
@@ -53,6 +53,7 @@ namespace webapi_02
                     // Check if the reader has rows
                     if (sqlDataReader.HasRows)
                     {
+                        int row = 1;
                         // Read each row from the data reader
                         while (sqlDataReader.Read())
                         {
@@ -71,8 +72,17 @@ namespace webapi_02
                             int salaryOrdinal = sqlDataReader.GetOrdinal("Salary");
                             employee.Salary = sqlDataReader.IsDBNull(salaryOrdinal) ? null : sqlDataReader.GetDecimal(salaryOrdinal);
 
+                            if (row == 1)
+                            {
+                                employeeResponse.StartRow = sqlDataReader.GetInt32(sqlDataReader.GetOrdinal("StartRow"));
+                                employeeResponse.EndRow = sqlDataReader.GetInt32(sqlDataReader.GetOrdinal("EndRow"));
+                                employeeResponse.TotalRows = sqlDataReader.GetInt32(sqlDataReader.GetOrdinal("TotalRows"));
+                            }
+
                             // Add the current employee to a list of employees
-                            employees.Add(employee);
+                            employeeResponse.Employees.Add(employee);
+
+                            row++;
                         }
                     }
                     else
@@ -82,7 +92,7 @@ namespace webapi_02
                 }
             }
 
-            return employees;
+            return employeeResponse;
         }
 
         private static string GetSearchQuery()

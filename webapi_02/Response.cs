@@ -9,6 +9,6 @@ namespace webapi_02
         [JsonConverter(typeof(JsonStringEnumConverter))] //Serialize the Result enum to a string, e.g "success" (instead of an integer, e.g. 0)
         public Result Result { get; set; } = Result.error;
         public string Message { get; set; } = "";
-        public List<Employee> Employees { get; set; } = new List<Employee>();
+        public EmployeeResponse EmployeeResponse { get; set; } = new EmployeeResponse();
     }
 }

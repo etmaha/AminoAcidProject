@@ -35,8 +35,8 @@ namespace webapi_02.Controllers
                     sqlConnection.Open();
 
                     //Select employees
-                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
-                    response.Message = $"{response.Employees.Count} employees selected.";
+                    response.EmployeeResponse = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
+                    response.Message = $"{response.EmployeeResponse.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
                 }
@@ -67,8 +67,8 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsInserted} employees inserted. ";
 
                     //Select employees after insert
-                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
-                    response.Message += $"{response.Employees.Count} employees selected.";
+                    response.EmployeeResponse = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
+                    response.Message = $"{response.EmployeeResponse.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
                 }
@@ -99,8 +99,8 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsUpdated} employees updated. ";
 
                     //Select employees after update
-                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
-                    response.Message += $"{response.Employees.Count} employees selected.";
+                    response.EmployeeResponse = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
+                    response.Message = $"{response.EmployeeResponse.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
                 }
@@ -131,8 +131,8 @@ namespace webapi_02.Controllers
                     response.Message = "${rowsDeleted} employees deleted. ";
 
                     //Select employees after delete
-                    response.Employees = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
-                    response.Message += $"{response.Employees.Count} employees selected.";
+                    response.EmployeeResponse = Employee.SearchEmployees(sqlConnection, search, pageSize, pageNumber, sort);
+                    response.Message = $"{response.EmployeeResponse.Employees.Count} employees selected.";
 
                     response.Result = Result.success;
                 }
