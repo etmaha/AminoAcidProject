@@ -61,3 +61,8 @@ main {
 #div-pagination-message {
     font-size: .875rem;
 }
+
+.my-validation {
+    font-size: 0.65rem;
+    color: red;
+}

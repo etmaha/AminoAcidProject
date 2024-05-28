@@ -31,6 +31,10 @@ function webapp_02() {
     var buttonEmployeeInsertSave = document.getElementById("button-employee-insert-save");
     var buttonEmployeeInsertCancel = document.getElementById("button-employee-insert-cancel");
 
+    var inputEmployeeInsertFirstNameValidationMessage = document.getElementById("input-employee-insert-first-name-validation-message");
+    var inputEmployeeInsertLastNameValidationMessage = document.getElementById("input-employee-insert-last-name-validation-message");
+    var inputEmployeeInsertSalaryValidationMessage = document.getElementById("input-employee-insert-salary-validation-message");
+
     var formEmployeeUpdate = document.getElementById("form-employee-update");
     var inputEmployeeUpdateEmployeeId = document.getElementById("input-employee-update-employee-id");
     var inputEmployeeUpdateFirstName = document.getElementById("input-employee-update-first-name");
@@ -54,6 +58,10 @@ function webapp_02() {
     buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
     buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
     buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
+
+    inputEmployeeInsertFirstName.addEventListener("blur", validateEmployeeInsertFirstName);
+    inputEmployeeInsertLastName.addEventListener("blur", validateEmployeeInsertLastName);
+    inputEmployeeInsertSalary.addEventListener("blur", validateEmployeeInsertSalary);
 
     buttonPagePrevious.addEventListener("click", handleButtonPagePreviousClick);
     buttonPageNext.addEventListener("click", handleButtonPageNextClick);
@@ -162,12 +170,16 @@ function webapp_02() {
         showPage(page);
     }
 
-    function handleInputEmployeesSearchClick() {
+    function handleInputEmployeesSearchClick(event) {
+        event.preventDefault();
+
         inputPage.value = 1;
         searchEmployees();
     }
 
-    function handleButtonEmployeesShowAllClick() {
+    function handleButtonEmployeesShowAllClick(event) {
+        event.preventDefault();
+
         inputPage.value = 1;
         inputEmployeeSearch.value = "";
         sortOrder = "EmployeeId";
@@ -250,7 +262,9 @@ function webapp_02() {
         }
     }
 
-    function handleButtonEmployeesClearClick() {
+    function handleButtonEmployeesClearClick(event) {
+        event.preventDefault();
+
         sortOrder = "EmployeeId";
         inputPage.value = 1;
         inputEmployeeSearch.value = "";
@@ -334,7 +348,9 @@ function webapp_02() {
         }
     }
 
-    function handleButtonPagePreviousClick() {
+    function handleButtonPagePreviousClick(event) {
+        event.preventDefault();
+
         var page = Number(inputPage.value);
 
         if (page > 1) {
@@ -348,7 +364,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonPageNextClick() {
+    function handleButtonPageNextClick(event) {
+        event.preventDefault();
+
         var page = Number(inputPage.value);
         inputPage.value = page + 1;
         searchEmployees();
@@ -359,7 +377,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonSortEmployeeIdClick() {
+    function handleButtonSortEmployeeIdClick(event) {
+        event.preventDefault();
+
         if (sortOrder === "EmployeeId") {
             sortOrder = "EmployeeIdDesc";
         } else {
@@ -369,7 +389,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonSortFirstNameClick() {
+    function handleButtonSortFirstNameClick(event) {
+        event.preventDefault();
+
         if (sortOrder === "FirstName") {
             sortOrder = "FirstNameDesc";
         } else {
@@ -379,7 +401,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonSortLastNameClick() {
+    function handleButtonSortLastNameClick(event) {
+        event.preventDefault();
+
         if (sortOrder === "LastName") {
             sortOrder = "LastNameDesc";
         } else {
@@ -389,7 +413,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonSortSalaryClick() {
+    function handleButtonSortSalaryClick(event) {
+        event.preventDefault();
+
         if (sortOrder === "Salary") {
             sortOrder = "SalaryDesc";
         } else {
@@ -399,7 +425,9 @@ function webapp_02() {
         searchEmployees();
     }
 
-    function handleButtonEmployeeInsertClick() {
+    function handleButtonEmployeeInsertClick(event) {
+        event.preventDefault();
+
         formEmployeeInsert.classList.remove("visually-hidden");
         formEmployeeUpdate.classList.add("visually-hidden");
         sortOrder = "EmployeeIdDesc";
@@ -410,12 +438,81 @@ function webapp_02() {
 
     function handleButtonEmployeeInsertSaveClick(event) {
         event.preventDefault();
-        insertEmployee();
-        hideFormEmployeeInsert();
+
+        var isValidEmployeeInsertForm = validateEmployeeInsert();
+
+        if (isValidEmployeeInsertForm) {
+            event.preventDefault();
+            insertEmployee();
+            hideFormEmployeeInsert();
+        }
     }
+
+    function validateEmployeeInsert() {
+        var isValid = true;
+
+        if (!validateEmployeeInsertFirstName()) {
+            isValid = false;
+        }
+
+        if (!validateEmployeeInsertLastName()) {
+            isValid = false;
+        }
+
+        if (!validateEmployeeInsertSalary()) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function validateEmployeeInsertFirstName() {
+        var isValid = inputEmployeeInsertFirstName.value.trim().length >= 1;
+
+        if (isValid) {
+            inputEmployeeInsertFirstNameValidationMessage.classList.add("visually-hidden");
+        } else {
+            inputEmployeeInsertFirstName.value = "";
+            inputEmployeeInsertFirstNameValidationMessage.classList.remove("visually-hidden");
+        }
+
+        return isValid;
+    }
+
+    function validateEmployeeInsertLastName() {
+        var isValid = inputEmployeeInsertLastName.value.trim().length >= 1;
+
+        if (isValid) {
+            inputEmployeeInsertLastNameValidationMessage.classList.add("visually-hidden");
+        } else {
+            inputEmployeeInsertLastName.value = "";
+            inputEmployeeInsertLastNameValidationMessage.classList.remove("visually-hidden");
+        }
+
+        return isValid;
+    }
+
+    function validateEmployeeInsertSalary() {
+        var isValid = inputEmployeeInsertSalary.value.trim().length >= 1;
+
+        if (isValid) {
+            inputEmployeeInsertSalaryValidationMessage.classList.add("visually-hidden");
+        } else {
+            inputEmployeeInsertSalary.value = "";
+            inputEmployeeInsertSalaryValidationMessage.classList.remove("visually-hidden");
+        }
+
+        return isValid;
+    }
+
 
     function handleButtonEmployeeInsertCancelClick(event) {
         event.preventDefault();
+
+        inputEmployeeInsertFirstNameValidationMessage.classList.add("visually-hidden");
+        inputEmployeeInsertLastNameValidationMessage.classList.add("visually-hidden");
+        inputEmployeeInsertSalaryValidationMessage.classList.add("visually-hidden");
+
         hideFormEmployeeInsert();
         sortOrder = "EmployeeId";
         searchEmployees();
@@ -429,6 +526,8 @@ function webapp_02() {
     }
 
     function handleEmployeeTableUpdateClick(event) {
+        event.preventDefault();
+
         var employeeId = event.target.getAttribute("data-employee-id");
 
         var firstName = document.getElementById("employee-" + employeeId + "-first-name");
@@ -445,6 +544,8 @@ function webapp_02() {
     }
 
     function handleEmployeeTableDeleteClick(event) {
+        event.preventDefault();
+
         var employeeId = event.target.getAttribute("data-employee-id");
 
         var userConfirmedDelete = confirm("Are you sure you want to delete employee " + employeeId + "?");
@@ -456,12 +557,14 @@ function webapp_02() {
 
     function handleButtonEmployeeUpdateSaveClick(event) {
         event.preventDefault();
+
         updateEmployee();
         hideFormEmployeeUpdate();
     }
 
     function handleButtonEmployeeUpdateCancelClick(event) {
         event.preventDefault();
+
         hideFormEmployeeUpdate();
     }
 
