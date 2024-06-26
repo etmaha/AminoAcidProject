@@ -17,7 +17,7 @@ namespace webapi_02.Controllers
         }
 
         //Connection string
-        private static string serverName = @"LAPTOP-T24FIB73\SQLEXPRESS01"; //Change to the "Server Name" you see when you launch SQL Server Management Studio.
+        private static string serverName = @"DESKTOP-VVE2V6B\SQLEXPRESS"; //Change to the "Server Name" you see when you launch SQL Server Management Studio.
         private static string databaseName = "db2024_01"; //Change to the database where you created your Employee table.
         private static string connectionString = $"data source={serverName}; database={databaseName}; Integrated Security=true;Encrypt=true;TrustServerCertificate=true;";
 

@@ -23,7 +23,7 @@ app.Use(async (context, next) =>
     var url = context.Request.Path.Value ?? "";
     url = url.ToLower();
 
-    if (url.ToLower().EndsWith("/employees") || url.ToLower().EndsWith("/customers") || url.ToLower().EndsWith("/products"))
+    if (url.ToLower().EndsWith("/home") || url.ToLower().EndsWith("/proteins") || url.ToLower().EndsWith("/mappings") || url.ToLower().EndsWith("/about"))
     {
         context.Request.Path = "/index.html";
     }

@@ -10,5 +10,7 @@ namespace webapi_02
         public Result Result { get; set; } = Result.error;
         public string Message { get; set; } = "";
         public EmployeeResponse EmployeeResponse { get; set; } = new EmployeeResponse();
+        public List<Protein> Proteins { get; set; } = new List<Protein>();
+        public List<ProteinCompletenessMapping> ProteinCompletenessMappings { get; set; } = new List<ProteinCompletenessMapping>();
     }
 }

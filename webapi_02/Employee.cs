@@ -202,5 +202,9 @@ namespace webapi_02
             return rowsDeleted;
         }
 
+        internal static EmployeeResponse SearchPlantProtein(SqlConnection sqlConnection, string search, int pageSize, int pageNumber, string sort)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

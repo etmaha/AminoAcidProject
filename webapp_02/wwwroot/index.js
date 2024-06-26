@@ -7,20 +7,24 @@ function webapp_02() {
     var navPage01 = document.getElementById("nav-page-01");
     var navPage02 = document.getElementById("nav-page-02");
     var navPage03 = document.getElementById("nav-page-03");
+    var navPage04 = document.getElementById("nav-page-04");
 
     var page01 = document.getElementById("page-01");
     var page02 = document.getElementById("page-02");
     var page03 = document.getElementById("page-03");
+    var page04 = document.getElementById("page-04");
+
 
     var inputEmployeeSearch = document.getElementById("input-employee-search");
     var buttonEmployeesShowAll = document.getElementById("button-employees-show-all");
     var buttonEmployeesClear = document.getElementById("button-employees-clear");
     var buttonEmployeeInsert = document.getElementById("button-employee-insert");
-    var employeeTable = document.getElementById("employee-table");
+    var employeeTable01 = document.getElementById("employee-table-01");
+    var employeeTable02 = document.getElementById("employee-table-02");
 
     var buttonPagePrevious = document.getElementById("button-page-previous");
     var buttonPageNext = document.getElementById("button-page-next");
-    var inputPage = document.getElementById("input-page");
+    // var inputPage = document.getElementById("input-page");
     var selectPageSize = document.getElementById("select-page-size");
     var divPaginationMessage = document.getElementById("div-pagination-message");
 
@@ -43,6 +47,9 @@ function webapp_02() {
     var buttonEmployeeUpdateSave = document.getElementById("button-employee-update-save");
     var buttonEmployeeUpdateCancel = document.getElementById("button-employee-update-cancel");
 
+    var buttonInsertProteinCompletenessMapping = document.getElementById("button-insert-protein-completeness-mapping");
+    var selectInsertProteinCompletenessMappingProteinId = document.getElementById("select-insert-protein-completeness-mapping-proteinid");
+    var selectInsertProteinCompletenessMappingCompletesWithProteinId = document.getElementById("select-insert-protein-completeness-mapping-completes-with-proteinid");
 
     //Add event listeners
     window.addEventListener('popstate', handlePopState);
@@ -50,58 +57,75 @@ function webapp_02() {
     navPage01.addEventListener("click", handleButtonNavPage01Click);
     navPage02.addEventListener("click", handleButtonNavPage02Click);
     navPage03.addEventListener("click", handleButtonNavPage03Click);
+    navPage04.addEventListener("click", handleButtonNavPage04Click);
+
+    buttonInsertProteinCompletenessMapping.addEventListener("click", handleButtonInsertProteinCompletenessMappingClick)
 
     inputEmployeeSearch.addEventListener("keyup", handleInputEmployeesSearchClick);
-    buttonEmployeesShowAll.addEventListener("click", handleButtonEmployeesShowAllClick);
-    buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClearClick);
+    //buttonEmployeesShowAll.addEventListener("click", handleButtonEmployeesShowAllClick);
+    //buttonEmployeesClear.addEventListener("click", handleButtonEmployeesClearClick);
 
-    buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
-    buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
-    buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
+    // buttonEmployeeInsert.addEventListener("click", handleButtonEmployeeInsertClick);
+    // buttonEmployeeInsertSave.addEventListener("click", handleButtonEmployeeInsertSaveClick);
+    // buttonEmployeeInsertCancel.addEventListener("click", handleButtonEmployeeInsertCancelClick);
 
-    inputEmployeeInsertFirstName.addEventListener("blur", validateEmployeeInsertFirstName);
-    inputEmployeeInsertLastName.addEventListener("blur", validateEmployeeInsertLastName);
-    inputEmployeeInsertSalary.addEventListener("blur", validateEmployeeInsertSalary);
+    // inputEmployeeInsertFirstName.addEventListener("blur", validateEmployeeInsertFirstName);
+    // inputEmployeeInsertLastName.addEventListener("blur", validateEmployeeInsertLastName);
+    // inputEmployeeInsertSalary.addEventListener("blur", validateEmployeeInsertSalary);
 
-    buttonPagePrevious.addEventListener("click", handleButtonPagePreviousClick);
-    buttonPageNext.addEventListener("click", handleButtonPageNextClick);
-    selectPageSize.addEventListener("change", handleSelectPageSizeChange);
+    // buttonPagePrevious.addEventListener("click", handleButtonPagePreviousClick);
+    // buttonPageNext.addEventListener("click", handleButtonPageNextClick);
+    // selectPageSize.addEventListener("change", handleSelectPageSizeChange);
 
-    buttonEmployeeUpdateSave.addEventListener("click", handleButtonEmployeeUpdateSaveClick);
-    buttonEmployeeUpdateCancel.addEventListener("click", handleButtonEmployeeUpdateCancelClick);
+    // buttonEmployeeUpdateSave.addEventListener("click", handleButtonEmployeeUpdateSaveClick);
+    // buttonEmployeeUpdateCancel.addEventListener("click", handleButtonEmployeeUpdateCancelClick);
 
     //Functions
     function handleButtonNavPage01Click(event) {
         event.preventDefault();
-        window.history.pushState({}, "", "/" + "Employees");
-        showPage("Employees");
+        window.history.pushState({}, "", "/" + "Home");
+        showPage("Home");
     }
 
     function handleButtonNavPage02Click(event) {
         event.preventDefault();
-        window.history.pushState({}, "", "/" + "Customers");
-        showPage("Customers");
+        window.history.pushState({}, "", "/" + "Proteins");
+        showPage("Proteins");
     }
 
     function handleButtonNavPage03Click(event) {
         event.preventDefault();
-        window.history.pushState({}, "", "/" + "Products");
-        showPage("Products");
+        window.history.pushState({}, "", "/" + "Mappings");
+        showPage("Mappings");
+    }
+
+    function handleButtonNavPage04Click(event) {
+        event.preventDefault();
+        window.history.pushState({}, "", "/" + "About");
+        showPage("About");
     }
 
     function showPage(page) {
-        if (page.toLowerCase() === "employees" || page === "") {  //lowercase comparison
+        if (page.toLowerCase() === "home" || page === "") {  //lowercase comparison
             showPage01();
             hidePage02();
             hidePage03();
-        } else if (page.toLowerCase() === "customers") {  //lowercase comparison
+            hidePage04();
+        } else if (page.toLowerCase() === "proteins") {  //lowercase comparison
             hidePage01();
             showPage02();
             hidePage03();
-        } else if (page.toLowerCase() === "products") {  //lowercase comparison
+            hidePage04();
+        } else if (page.toLowerCase() === "mappings") {  //lowercase comparison
             hidePage01();
             hidePage02();
             showPage03();
+            hidePage04();
+        } else if (page.toLowerCase() === "about") {  //lowercase comparison
+            hidePage01();
+            hidePage02();
+            hidePage03();
+            showPage04();
         }
     }
 
@@ -153,11 +177,32 @@ function webapp_02() {
         navPage03.classList.remove("link-opacity-100");
     }
 
+    function showPage04() {
+        navPage04.classList.remove("link-secondary");
+        navPage04.classList.remove("link-opacity-50");
+        navPage04.classList.add("link-body-emphasis");
+        navPage04.classList.add("link-opacity-100");
+        page04.classList.remove("visually-hidden");
+        inputEmployeeSearch.classList.add("visually-hidden");
+        document.getElementsByTagName("main")[0].classList.add("page-about-height");
+
+    }
+
+    function hidePage04() {
+        page04.classList.add("visually-hidden");
+        navPage04.classList.add("link-secondary");
+        navPage04.classList.add("link-opacity-50");
+        navPage04.classList.remove("link-body-emphasis");
+        navPage04.classList.remove("link-opacity-100");
+        inputEmployeeSearch.classList.remove("visually-hidden");
+        document.getElementsByTagName("main")[0].classList.remove("page-about-height");
+    }
+
     function handleNewUrl() {
         var page = window.location.pathname.split('/')[1];
 
         if (page === "") {
-            window.history.replaceState({}, "", "/" + "Employees");
+            window.history.replaceState({}, "", "/" + "Home");
         } else {
             window.history.replaceState({}, "", "/" + page);
         }
@@ -173,18 +218,52 @@ function webapp_02() {
     function handleInputEmployeesSearchClick(event) {
         event.preventDefault();
 
-        inputPage.value = 1;
-        searchEmployees();
+        // inputPage.value = 1;
+        //searchEmployees();
+        searchProteinCompletenessMappings();
     }
 
     function handleButtonEmployeesShowAllClick(event) {
         event.preventDefault();
 
-        inputPage.value = 1;
+        // inputPage.value = 1;
         inputEmployeeSearch.value = "";
         sortOrder = "EmployeeId";
         searchEmployees();
     }
+
+
+    function searchProteins() {
+        var url = "http://localhost:5284/proteins";  //Port must be the port the API is running on
+        url += "?search=" + inputEmployeeSearch.value;
+        callAPI(url);
+    }
+
+
+    function searchProteinCompletenessMappings() {
+        var url = "http://localhost:5284/proteincompletnessmappings";  //Port must be the port the API is running on
+        url += "?search=" + inputEmployeeSearch.value;
+        callAPI(url);
+    }
+
+    function insertProteinCompletenessMapping(ProteinId, completesWithProteinId) {
+        var url = "http://localhost:5284/insertproteincompletenessmapping";  //Port must be the port the API is running on
+        url += "?proteinid=" + ProteinId;
+        url += "&completeswithproteinid=" + completesWithProteinId;
+        url += "&search=" + inputEmployeeSearch.value;
+        // alert(url);
+        callAPI(url);
+    }
+
+    function deleteProteinCompletenessMapping(ProteinId, completesWithProteinId) {
+        var url = "http://localhost:5284/deleteproteincompletenessmapping";  //Port must be the port the API is running on
+        url += "?proteinid=" + ProteinId;
+        url += "&completeswithproteinid=" + completesWithProteinId;
+        url += "&search=" + inputEmployeeSearch.value;
+        // alert(url);
+        callAPI(url);
+    }
+
 
     function searchEmployees() {
         var url = "http://localhost:5284/employees";  //Port must be the port the API is running on
@@ -248,10 +327,12 @@ function webapp_02() {
                     if (response.result === "success") {
                         //alert(response.message);
 
-                        makePaginationMessage(response.employeeResponse);
+                        //makePaginationMessage(response.employeeResponse);
 
                         //Turn array of employees into an html table
-                        makeEmployeeTable(response.employeeResponse.employees);
+                        //makeEmployeeTable(response.employeeResponse.employees);
+
+                        makeProteinTable(response.proteinCompletenessMappings);
                     } else {
                         alert("API Error: " + response.message);
                     }
@@ -266,7 +347,7 @@ function webapp_02() {
         event.preventDefault();
 
         sortOrder = "EmployeeId";
-        inputPage.value = 1;
+        // inputPage.value = 1;
         inputEmployeeSearch.value = "";
         employeeTable.innerHTML = "";
     }
@@ -320,7 +401,8 @@ function webapp_02() {
         empString += '</table>';
 
         //Inject the table string
-        employeeTable.innerHTML = empString;
+        employeeTable01.innerHTML = empString;
+        employeeTable02.innerHTML = empString;
 
         //Get new elements we just created
         var buttonSortEmployeeId = document.getElementById("button-sort-employee-id");
@@ -348,32 +430,101 @@ function webapp_02() {
         }
     }
 
-    function handleButtonPagePreviousClick(event) {
-        event.preventDefault();
 
-        var page = Number(inputPage.value);
+    function makeProteinTable(proteins) {
 
-        if (page > 1) {
-            page = page - 1;
-        } else {
-            page = 1;
+        //Create table top boilerplate
+        var proteinString = '<table class="table table-sm">';
+
+        proteinString += '<thead>';
+        proteinString += '<tr>';
+        proteinString += '<th scope="col">Protein</th>';
+        proteinString += '<th scope="col">Complimentatry Protein</th>';
+        proteinString += '</tr>';
+        proteinString += '</thead>';
+        proteinString += '<tbody>';
+
+        //Loop over employees array and build the table rows
+        for (var i = 0; i < proteins.length; i++) {
+            var protein = proteins[i];
+            proteinString += '<tr>';
+            proteinString += '<td>' + protein.proteinName + '</td>';
+            proteinString += '<td>' + protein.completesWithProteinName + '</td>';
+
+            proteinString += '<td>';
+            // proteinString += '  <button type="button" class="btn btn-outline-secondary btn-sm protein-table-update-button" data-protein-id="' + protein.proteinId + '" data-completes-with-protein-id="' + protein.completeswithProteinId + '">Update</button>';
+            proteinString += '  <button type="button" class="btn btn-outline-secondary btn-sm protein-table-delete-button" data-protein-id="' + protein.proteinId + '" data-completes-with-protein-id="' + protein.completesWithProteinId + '">Delete</button>';
+            proteinString += '</td>';
+
+            proteinString += '</tr>';
         }
 
-        inputPage.value = page;
+        //Create table bottom boilerplate
+        proteinString += '</tbody>';
+        proteinString += '</table>';
 
-        searchEmployees();
+        //Inject the table string
+        employeeTable01.innerHTML = proteinString;
+        employeeTable02.innerHTML = proteinString;
+
+        var deleteButtons = document.getElementsByClassName("protein-table-delete-button");
+
+        for (var i = 0; i < deleteButtons.length; i++) {
+            var deleteButton = deleteButtons[i];
+            deleteButton.addEventListener("click", handleProteinTableDeleteClick);
+        }
+
+        function handleProteinTableDeleteClick(event) {
+            event.preventDefault();
+
+            var proteinId = event.target.getAttribute("data-protein-id");
+            var completesWithProteinId = event.target.getAttribute("data-completes-with-protein-id");
+
+            var userConfirmedDelete = confirm("Are you sure you want to delete protein completeness mapping " + proteinId + "," + completesWithProteinId + "?");
+
+            if (userConfirmedDelete) {
+                deleteProteinCompletenessMapping(proteinId, completesWithProteinId);
+            }
+
+
+        }
+
     }
 
-    function handleButtonPageNextClick(event) {
+    function handleButtonInsertProteinCompletenessMappingClick(event) {
         event.preventDefault();
-
-        var page = Number(inputPage.value);
-        inputPage.value = page + 1;
-        searchEmployees();
+        var proteinId = selectInsertProteinCompletenessMappingProteinId.value;
+        var completesWithProteinId = selectInsertProteinCompletenessMappingCompletesWithProteinId.value;
+        insertProteinCompletenessMapping(proteinId, completesWithProteinId);
     }
+
+
+    // function handleButtonPagePreviousClick(event) {
+    //     event.preventDefault();
+
+    //     var page = Number(inputPage.value);
+
+    //     if (page > 1) {
+    //         page = page - 1;
+    //     } else {
+    //         page = 1;
+    //     }
+
+    //     inputPage.value = page;
+
+    //     searchEmployees();
+    // }
+
+    // function handleButtonPageNextClick(event) {
+    //     event.preventDefault();
+
+    //     var page = Number(inputPage.value);
+    //     inputPage.value = page + 1;
+    //     searchEmployees();
+    // }
 
     function handleSelectPageSizeChange() {
-        inputPage.value = 1;
+        // inputPage.value = 1;
         searchEmployees();
     }
 
@@ -431,7 +582,7 @@ function webapp_02() {
         formEmployeeInsert.classList.remove("visually-hidden");
         formEmployeeUpdate.classList.add("visually-hidden");
         sortOrder = "EmployeeIdDesc";
-        inputPage.value = 1;
+        // inputPage.value = 1;
         inputEmployeeSearch.value = "";
         searchEmployees();
     }

@@ -1,12 +1,16 @@
 header,
 footer {
-    background-color: lavender;
+    background-color: rgb(22, 193, 36);
     border-top: solid 1px darkgray;
-    border-bottom: solid 1px darkgray;
+    border-bottom: rgb(22, 193, 36);
 }
 
 main {
-    height: 544px;
+    height: 534px;
+}
+
+.page-about-height {
+    height: 734px;
 }
 
 .btn-my-sort {
@@ -47,7 +51,7 @@ main {
 }
 
 #employee-table-wrapper {
-    height: 450px;
+    height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
 

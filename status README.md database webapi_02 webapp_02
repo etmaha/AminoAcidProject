@@ -1,0 +1,127 @@
+[33mcommit 5066482aeda7d180f290f12a5b3d02a0d10bfdb2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 21:55:31 2024 -0500
+
+    added form validation for employee insert
+
+[33mcommit 99244bcad2429ae3a7c106ff2ccf1436a688c332[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 20:36:27 2024 -0500
+
+    added database scripts to create employee table
+
+[33mcommit 29ebb0317f61e91e5fded16cbea2c2e659f7db7a[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 20:27:28 2024 -0500
+
+    added support for search on the keystroke
+
+[33mcommit d6c488f4f746fd682ac5fe60f752e8dc943e90dd[m
+Merge: 1754940 eccd1b5
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 19:47:29 2024 -0500
+
+    added support for pagination
+
+[33mcommit 175494077bab0e749ad6a5632f7baf07cc377341[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 16:13:45 2024 -0500
+
+    added support for employee update and delete
+
+[33mcommit eccd1b5dd48beb7f3d57ef6497ee4c01b8b0db0e[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 16:13:45 2024 -0500
+
+    added support for employee update and delete
+
+[33mcommit 2fdaeca79543b2cbe85f2a392c9038ac8584b210[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 15:48:38 2024 -0500
+
+    added support for employee insert
+
+[33mcommit aad5282bfcaeafb22c773ba8f35f9ba8e11ad43c[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 15:03:55 2024 -0500
+
+    fix nav to keep nav title style in sync with current page
+
+[33mcommit 3ad3f62737f5a0d783263a35146cc83e71e5a588[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 14:37:30 2024 -0500
+
+    added support for employee table sort
+
+[33mcommit eb2aeb70262a4a29ccc77dae0a8c3922e09fb0b0[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 12:51:17 2024 -0500
+
+    added page navigation support for back button, pasting URLs, bookmarks
+
+[33mcommit 4716c18f91db83298df3d824fd35511cef9eceaa[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 11:22:23 2024 -0500
+
+    add header/main/footer, bootstrap grid, nav
+
+[33mcommit 565792ce5429e333b16a5498f3c0f6a0f7183ac4[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Mon May 27 09:29:00 2024 -0500
+
+    Made API return a Result object.  Moved try/catch to controller.
+
+[33mcommit 62b6f3f43d5cd6780bf7d38f28784c4de9f9bacf[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Thu May 16 20:12:11 2024 -0500
+
+    Changed background color to pink
+
+[33mcommit 2cb56ff01db34faf01d3e95a6766e81ce3dd29fb[m
+Merge: de99d93 8a8ce94
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Thu May 16 19:43:06 2024 -0500
+
+    Merge branch 'main' of https://github.com/jackmulhollan/2024_class
+
+[33mcommit 8a8ce94eac23a6098bbb3ab0b15dbb109767eab3[m
+Author: jackmulhollan <jmulho@gmail.com>
+Date:   Thu May 16 19:29:33 2024 -0500
+
+    Initial commit
+
+[33mcommit de99d93fc76fc32fcb816e2533472e6567aa1515[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Thu May 16 19:24:07 2024 -0500
+
+    Added first Ajax call from webapp_02 to webapi_02
+
+[33mcommit fa6ab963e0e528f539d05eaac2425f5788521d69[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Thu May 16 19:23:32 2024 -0500
+
+    Set up CORS for webapi_02
+
+[33mcommit 960bfd23f8b2ec83ef02af0d66a935d76a817a8b[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Wed May 15 20:26:43 2024 -0500
+
+    got webapi_02 working with employees controller
+
+[33mcommit b8a2840075e2cca9c38dd91900f477691cbf082e[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Wed May 15 20:16:43 2024 -0500
+
+    converted webapi_02 to use --use-controllers
+
+[33mcommit 05fec99b423876d6defb5e85733609b90fc785bb[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Wed May 15 20:11:59 2024 -0500
+
+    made webapp a basic webapp for static files
+
+[33mcommit e9020ec21246854659e1679d067990eadc9921fd[m
+Author: Jack Mulhollan <jmulho@gmail.com>
+Date:   Wed May 15 20:00:25 2024 -0500
+
+    initial commit
